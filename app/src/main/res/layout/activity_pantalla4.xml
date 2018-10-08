@@ -14,7 +14,7 @@
             android:id="@+id/btn_arriba"
             android:layout_width="90dp"
             android:layout_height="80dp"
-            android:layout_marginStart="160dp"
+            android:layout_marginStart="170dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/arriba"
             >
@@ -30,7 +30,7 @@
             android:id="@+id/btn_izquierda"
             android:layout_width="80dp"
             android:layout_height="90dp"
-            android:layout_marginStart="80dp"
+            android:layout_marginStart="95dp"
             android:background="@drawable/izq"
             >
         </Button>
@@ -48,7 +48,7 @@
             android:id="@+id/btn_disparar"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="80dp"
             android:background="@drawable/luz"
             >
         </Button>
@@ -64,7 +64,7 @@
             android:id="@+id/btn_abajo"
             android:layout_width="90dp"
             android:layout_height="80dp"
-            android:layout_marginStart="160dp"
+            android:layout_marginStart="170dp"
             android:background="@drawable/abajo"
             >
         </Button>
