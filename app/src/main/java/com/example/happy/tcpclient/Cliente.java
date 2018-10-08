@@ -2,6 +2,7 @@ package com.example.happy.tcpclient;
 
 import android.util.Log;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -10,28 +11,34 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Cliente extends Thread{
-
-    //Variable global porque lo oy a utilizar mas adelante
+    
     Socket s;
     Receptor r;
+    String ip;
 
     //Inyección de dependencias
-    MainActivity activity;
-    public Cliente(MainActivity activity){
+    Pantalla4 activity;
+
+    /**
+     * Constructor del Cliente
+     * @param activity
+     * @param ip
+     */
+    public Cliente(Pantalla4 activity, String ip){
         this.activity = activity;
+        this.ip = ip;
     }
 
+    /**
+     * Metodo para iniciar el hilo y entablar una conexión con eclipse que esta esperandola
+     */
     @Override
     public void run() {
-        //Entablar una conexión con eclipse que esta esperando una conexión
         try {
-            s = new Socket("10.0.2.2", 6000);
-
-            r = new Receptor(s);
+            s = new Socket(ip, 5000);
+            r = new Receptor(s, activity);
             r.setObserver(activity);
             r.start();
-            enviar();
-
         } catch (UnknownHostException e){
             e.printStackTrace();
         } catch (IOException e) {
@@ -39,22 +46,20 @@ public class Cliente extends Thread{
         }
     }
 
-
-    public void enviar(){
+    /**
+     * Metodo para enviar información (Strings)
+     * @param mensaje
+     */
+    public void enviar(final String mensaje){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    OutputStream os = s.getOutputStream();
-                    PrintWriter out = new PrintWriter(new OutputStreamWriter(os));
-                   out.println("Deberia funcionar...");
-                    out.flush();
+                    DataOutputStream os = new DataOutputStream(s.getOutputStream());
+                    os.writeUTF(mensaje);
                 }catch (IOException e) {
-
                 }
             }
         }).start();
-
-
     }
 }

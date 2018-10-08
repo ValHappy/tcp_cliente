@@ -1,8 +1,13 @@
 package com.example.happy.tcpclient;
 
+import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,32 +20,38 @@ public class Receptor extends Thread {
 
 	Socket socket;
 	OnMessage observer;
+	Pantalla4 activity; //Pantalla de juego
 
-	public Receptor(Socket socket) {
+	/**
+	 * Constructor del Receptor
+	 * @param socket
+	 * @param activity
+	 */
+	public Receptor(Socket socket, Pantalla4 activity) {
 		this.socket = socket;
+		this.activity = activity;
 	}
 
+	/**
+	 * Metodo para correr el hilo y finalizar el juego
+	 */
 	@Override
 	public void run() {
-		
 		try {
-			InputStream is = socket.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
+			DataInputStream dis = new DataInputStream(socket.getInputStream());
 			while (true) {
-				String line = reader.readLine();
-				System.out.println(line);
-
-				Log.e("RECIBIDO", line);
-
-				observer.onReceived(line);
+				System.out.println("Esperando mensaje");
+				String mensaje = dis.readUTF();
+				if (mensaje.equals("EndGame")){
+					//Cambiar la pantalla aqui
+					Intent game = new Intent(activity.getApplicationContext(),Pantalla5.class);
+					activity.startActivity(game);
+				}
+				System.out.println("termina de mover");
 			}
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Cliente desconectado: " + e.getMessage());
 		}
-
 	}
 
 	public interface OnMessage{

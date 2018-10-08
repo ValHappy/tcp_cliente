@@ -11,30 +11,41 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.net.Socket;
 
-public class MainActivity extends AppCompatActivity implements Receptor.OnMessage{
+public class MainActivity extends AppCompatActivity{
 
+    //Inicio
+    private Button btn_play;
+    private Button btn_instrucciones;
 
-    private Cliente c;
-
+    /**
+     * Constructor de la pantalla principal
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       c = new Cliente(this);
-       c.start();
+        btn_play = findViewById(R.id.btn_jugar);
+        btn_instrucciones = findViewById(R.id.btn_instrucciones);
 
-    }
-
-    //Este meodo se ejecuta en paralelo
-    @Override
-    public void onReceived(final String mensaje) {
-        //Es lo unico que muestra lo del hilo graficamente
-        runOnUiThread(new Runnable() {
+        btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, mensaje, Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Intent play = new Intent(getApplicationContext(),Pantalla3.class);
+                startActivity(play);
             }
         });
+
+        btn_instrucciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent instru = new Intent(getApplicationContext(),Pantalla2.class);
+                startActivity(instru);
+            }
+        });
+
+
     }
+
 }
